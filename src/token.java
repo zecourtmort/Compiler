@@ -1,10 +1,11 @@
 
 public class token {
-	tokenType type;
+	tokenTypes type;
 	String identifier;
 	
-	public token(tokenType t){
+	public token(tokenTypes t, String identifier){
 		this.type = t;
+		this.identifier=identifier;
 	}
 }
 //[ token 1 , token 2, token 3, ... , token n];

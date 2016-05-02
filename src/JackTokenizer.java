@@ -1,10 +1,14 @@
 import java.io.*;
 import java.util.*;
-
 public class JackTokenizer{
 	
 	private Scanner scan;
-    private String cmd;
+    private String tkn;
+    private token[] Tokens;
+    private String[] tokenType = {"keyword", "symbol", "identifier", "int_const", "string_const" };
+    private String[] keyword = {"class","method","function","constructor","int","boolean","char",
+    							"void","var","static","field","let","do","if","else","while",
+    							"return","true","false","null","this"};
     private char[] symboltable = {'{', '}', '(' ,')', '[' , ']', '.', ',', ';', '+', '-', '*', '/', '&', '|', '<', '>', '=', '~'};
 	public JackTokenizer(String filename){
 		File infile = new File(filename);
@@ -26,31 +30,22 @@ public class JackTokenizer{
 	        catch(FileNotFoundException e){
 	            System.out.println(infile + " is not a valid file.");
 	        }
-	        /*cmds.add("add");
-	        cmds.add("sub");
-	        cmds.add("neg");
-	        cmds.add("eq");
-	        cmds.add("gt");
-	        cmds.add("lt");
-	        cmds.add("and");
-	        cmds.add("or");
-	        cmds.add("not");*/
 	}
 	
 	public void advance(){
-        cmd = scan.nextLine();
-       String[] splitcmd = cmd.split(" ");
-       /*arg1 = "";
-       arg2 = -1;*/
-       if(splitcmd.length > 3){
-           throw new IllegalArgumentException("Too many arguments");
-       }
+        tkn = scan.next();
+        String[] tknsplit;
+        if(tkn.contains("(")||tkn.contains(")")){
+        	tknsplit=tkn.split("(");
+        	token hold = new token(tokenTypes.IDENTIFIER, tknsplit[0]);
+        }
+	}
        
 	public boolean hasMoreTokens(){
 		return scan.hasNext();
 	}
 	
-	public tokenType tokenType(){
+	public tokenTypes tokenType(){
 		return null;
 	}
 	public keyWord keyWord(){
