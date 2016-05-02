@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class CompilationEngine{
-	public CompilationEngine(String infile, String outfile){
+	public CompilationEngine(ArrayList<token> in, String outfile){
 		
 	}
 	public void compileClass(){
