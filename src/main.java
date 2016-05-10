@@ -35,7 +35,7 @@ public class main{
             if (infile.isFile()) {
                 String path = infile.getAbsolutePath();
                 
-                if(!Parser.extension(path).equals(".vm")) {
+                if(!JackTokenizer.extension(path).equals(".vm")) {
                     throw new IllegalArgumentException(".vm file required.");
                 }
                 
@@ -54,7 +54,7 @@ public class main{
             }
                 
             outfile = new File(outfiledirectory);
-            writer = new CodeWriter(outfile);
+            writer = new CompilationEngine(infile,outfile);
             
             //writer.writeInit();
             for (File f: vm) {
