@@ -7,9 +7,16 @@ public class token {
 		this.type = t;
 		this.identifier=identifier;
 	}
+	
 	@Override
 	public String toString() {
-		return "token [type=" + type + ", identifier=" + identifier + "]\n";
+		return "<" + type + "> " + identifier + " </" + type + ">" + "\n";
+	}
+	public String toStringOpen() {
+		return "<" + type + "> " + identifier;
+	}
+	public String toStringClose() {
+		return " </" + type + ">" + "\n";
 	}
 }
 //[ token 1 , token 2, token 3, ... , token n];
