@@ -7,10 +7,9 @@ public class main{
 	public static void main(String args[]) throws FileNotFoundException, IOException{
 		// TODO code application logic here
 		ArrayList<token> in = new ArrayList<token>();
-		in.add(new token(tokenTypes.KEYWORD, "testkeyword1"));
-		in.add(new token(tokenTypes.SYMBOL, "testSYM1"));
+		in.add(new token(tokenTypes.KEYWORD, "class"));
 		in.add(new token(tokenTypes.IDENTIFIER, "testIDEN1"));
-		in.add(new token(tokenTypes.KEYWORD, "testkeyword2"));
+		in.add(new token(tokenTypes.SYMBOL, "{"));
 		in.add(new token(tokenTypes.INT_CONST, "testINT1"));
 		in.add(new token(tokenTypes.IDENTIFIER, "testIDEN2"));
 		in.add(new token(tokenTypes.SYMBOL, "testSYM2"));

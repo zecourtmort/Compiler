@@ -22,13 +22,35 @@ public class CompilationEngine {
 		}
 		
 		compileClass();
+		writer.close();
+		
 	}
 	public void compileClass() throws IOException{
 		if (tokens.get(token_pos).identifier.contains("class")) {
-			writer.write("<class>");
+			writer.write("<class>\n");
+			//tab++;
+			writer.write(tabout() + tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if (tokens.get(token_pos).type == tokenTypes.IDENTIFIER){
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if (tokens.get(token_pos).identifier.contains("{")) {
+			writer.write(tokens.get(token_pos).toString());
+		}
+		
+		if (tokens.get(token_pos).identifier.contains("static") || tokens.get(token_pos).identifier.contains("field")) {
+			//tab++;
+			writer.write(tabout() + tokens.get(token_pos).toString());
+			token_pos++;
 		}
 		
 		
+		
+		token_pos--;
 		writer.write("</class>");
 	}
 	public void compileClassVarDec(){
@@ -69,5 +91,12 @@ public class CompilationEngine {
 	}
 	public void CompileExpressionList(){
 		
+	}
+	public String tabout() {
+		String outstring = "";
+		for (int i = 0; i < tab; i++) {
+		outstring += "\t";	
+		}
+		return outstring;
 	}
 }
