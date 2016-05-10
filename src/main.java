@@ -4,9 +4,25 @@ import java.util.*;
 import java.io.*;
 public class main{
 	
-	public static void main(String args[]){
+	public static void main(String args[]) throws FileNotFoundException, IOException{
 		// TODO code application logic here
-        if (args.length != 1) {
+		ArrayList<token> in = new ArrayList<token>();
+		in.add(new token(tokenTypes.KEYWORD, "testkeyword1"));
+		in.add(new token(tokenTypes.SYMBOL, "testSYM1"));
+		in.add(new token(tokenTypes.IDENTIFIER, "testIDEN1"));
+		in.add(new token(tokenTypes.KEYWORD, "testkeyword2"));
+		in.add(new token(tokenTypes.INT_CONST, "testINT1"));
+		in.add(new token(tokenTypes.IDENTIFIER, "testIDEN2"));
+		in.add(new token(tokenTypes.SYMBOL, "testSYM2"));
+		in.add(new token(tokenTypes.STRING_CONST, "testSTR1"));
+		in.add(new token(tokenTypes.INT_CONST, "testINT2"));
+		in.add(new token(tokenTypes.STRING_CONST, "testSTR2"));
+		
+		CompilationEngine ce = new CompilationEngine(in, "testOut");
+		
+		
+		
+    /*    if (args.length != 1) {
             System.out.println("Please enter: java VMtranslator FILENAME|DIRECTORY");
         }
         else{
@@ -89,6 +105,6 @@ public class main{
                 }
                 return files;
             }
-        }
+        }*/
 }
 }
