@@ -48,7 +48,14 @@ public class CompilationEngine {
 			compileClassVarDec();
 		}
 		
+		while (tokens.get(token_pos+1).identifier.contains("constructor") || tokens.get(token_pos+1).identifier.contains("function") || tokens.get(token_pos+1).identifier.contains("method")) {
+			compileSubroutine();
+		}
 		
+		if (tokens.get(token_pos).identifier.equals("}")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
 		
 		token_pos--;
 		writer.write("</class>");
@@ -92,10 +99,82 @@ public class CompilationEngine {
 		
 		writer.write("</classVarDec>\n");
 	}
-	public void compileSubroutine(){
+	
+	public void compileSubroutine() throws IOException {
+		writer.write("<subroutine>\n");
+		
+		if(tokens.get(token_pos).identifier.equals("constructor") || tokens.get(token_pos).identifier.equals("function") || tokens.get(token_pos).identifier.equals("method")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(tokens.get(token_pos).identifier.equals("void") || tokens.get(token_pos).identifier.equals("int") || tokens.get(token_pos).identifier.equals("char") || tokens.get(token_pos).identifier.equals("boolean") || tokens.get(token_pos).type ==  tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(tokens.get(token_pos).identifier.equals("(")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(!tokens.get(token_pos).identifier.equals(")")) {
+			compileParameterList();
+		}
+		
+		if(tokens.get(token_pos).identifier.equals(")")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		writer.write("<subroutineBody>\n");
+		
+		if(!tokens.get(token_pos).identifier.equals("}")) {
+			compileStatements();
+		}
+		
+		if(tokens.get(token_pos).identifier.equals("}")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		writer.write("</subroutineBody>");
+		writer.write("<subroutineDec>");
 		
 	}
-	public void compileParameterList(){
+	public void compileParameterList() throws IOException{
+		writer.write("<parameterList>");
+		if(tokens.get(token_pos).identifier.equals("int") || tokens.get(token_pos).identifier.equals("char") || tokens.get(token_pos).identifier.equals("boolean") || tokens.get(token_pos).type ==  tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		while(tokens.get(token_pos+1).identifier.equals(",")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		
+			if(tokens.get(token_pos).identifier.equals("int") || tokens.get(token_pos).identifier.equals("char") || tokens.get(token_pos).identifier.equals("boolean") || tokens.get(token_pos).type ==  tokenTypes.IDENTIFIER) {
+				writer.write(tokens.get(token_pos).toString());
+				token_pos++;
+			}
+		
+			if(tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+				writer.write(tokens.get(token_pos).toString());
+				token_pos++;
+			}
+		}
+		
+		writer.write("</parameterList>");
 		
 	}
 	public void compileVarDec(){
