@@ -40,12 +40,12 @@ public class CompilationEngine {
 		
 		if (tokens.get(token_pos).identifier.contains("{")) {
 			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
 		}
 		
-		if (tokens.get(token_pos).identifier.contains("static") || tokens.get(token_pos).identifier.contains("field")) {
-			//tab++;
-			writer.write(tabout() + tokens.get(token_pos).toString());
-			token_pos++;
+		
+		while (tokens.get(token_pos+1).identifier.contains("static") || tokens.get(token_pos+1).identifier.contains("field")) {
+			compileClassVarDec();
 		}
 		
 		
@@ -53,8 +53,44 @@ public class CompilationEngine {
 		token_pos--;
 		writer.write("</class>");
 	}
-	public void compileClassVarDec(){
+	public void compileClassVarDec() throws IOException{
+		writer.write("<ClassVarDec>\n");
 		
+		if (tokens.get(token_pos).identifier.contains("static") || tokens.get(token_pos).identifier.contains("field")) {
+			//tab++;
+			writer.write(tabout() + tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(tokens.get(token_pos).identifier.equals("int") 
+				|| tokens.get(token_pos).identifier.equals("boolean") 
+				|| tokens.get(token_pos).identifier.equals("char") 
+				|| tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		while(tokens.get(token_pos+1).identifier.equals(",")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(tokens.get(token_pos).identifier.equals(";")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		writer.write("</classVarDec>\n");
 	}
 	public void compileSubroutine(){
 		
