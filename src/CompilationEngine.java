@@ -293,25 +293,113 @@ public class CompilationEngine {
 		
 		writer.write("</doStatement>");
 	}
-	public void compileLet(){
+	public void compileLet() throws IOException{
+		writer.write("<letStatement>");
+		if (tokens.get(token_pos).equals("let")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(t(0).type == tokenTypes.IDENTIFIER) { //I got mad about writing out tokens.get(token_pos) every single time. t(0) and t() do the same thing.
+			writer.write(t(0).toString());
+		}
+		
+		if(t(1).identifier.equals("[")){
+			token_pos++;
+			writer.write(t(0).toString());
+			
+			compileExpression();
+			
+			token_pos++;
+			if (t(0).identifier.equals("]")) {
+				writer.write(t(0).toString());
+				token_pos++;
+			}
+		}
+		
+		if(t().identifier.equals("=")) {
+			writer.write(t().toString());
+		}
+		
+		compileExpression();
+		
+		token_pos++;
+		if(t().identifier.equals(";")){
+			writer.write(t().toString());
+			token_pos++;
+		}
+		
+		writer.write("</letStatement>");
+	}
+	
+	public void compileWhile() throws IOException{
+		writer.write("<whileStatement>");
+		if (tokens.get(token_pos).equals("while")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(t(0).identifier.equals("(")){
+			writer.write(t(0).toString());
+		}
+		
+		compileExpression();
+		token_pos++;
+		
+		if (t(0).identifier.equals(")")) {
+			writer.write(t(0).toString());
+			token_pos++;
+		}
+		
+		
+		if(t().identifier.equals("{")) {
+			writer.write(t().toString());
+		}
+		
+		if(!t(1).identifier.equals("}")) {
+			compileStatements();
+		}
+		
+		token_pos++;
+		
+		if(t().identifier.equals("}")){
+			writer.write(t().toString());
+			token_pos++;
+		}
+		
+		writer.write("</whileStatement>");
+	}
+	
+	public void compileReturn() throws IOException{
+		writer.write("<returnStatement>");
+		
+		if(t().identifier.equals("return")) {
+			writer.write(t().toString());
+		}
+		
+		if(!t(1).identifier.equals(";")) {
+			compileExpression();
+		}
+		
+		token_pos++;
+		if(t(0).identifier.equals(";")) {
+			writer.write(t().toString());
+			token_pos++;
+		}
+		
+		writer.write("</returnStatement>");
+	}
+	
+	public void compileIf() throws IOException{
 		
 	}
-	public void compileWhile(){
+	public void compileExpression() throws IOException{
 		
 	}
-	public void compileReturn(){
+	public void compileTerm() throws IOException{
 		
 	}
-	public void compileIf(){
-		
-	}
-	public void compileExpression(){
-		
-	}
-	public void compileTerm(){
-		
-	}
-	public void compileExpressionList(){
+	public void compileExpressionList() throws IOException{
 		
 	}
 	public String tabout() {
@@ -320,5 +408,13 @@ public class CompilationEngine {
 		outstring += "\t";	
 		}
 		return outstring;
+	}
+	
+	public token t(int i) {
+		return tokens.get(token_pos + i);
+	}
+	
+	public token t() {
+		return tokens.get(token_pos);
 	}
 }
