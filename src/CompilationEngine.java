@@ -6,6 +6,8 @@ public class CompilationEngine {
 	FileWriter writer;
 	int token_pos = 0;
 	int tab = 0;
+	String OPS = "+-*/&|<>=";
+	String UNOPS = "~-";
 	
 	public CompilationEngine(ArrayList<token> in, String outfile) throws FileNotFoundException, IOException{
 		File out = new File(outfile + ".xml");
@@ -143,12 +145,12 @@ public class CompilationEngine {
 			token_pos++;
 		}
 		
-		writer.write("</subroutineBody>");
-		writer.write("<subroutineDec>");
+		writer.write("</subroutineBody>\n");
+		writer.write("<subroutineDec>\n");
 		
 	}
 	public void compileParameterList() throws IOException{
-		writer.write("<parameterList>");
+		writer.write("<parameterList>\n");
 		if(tokens.get(token_pos).identifier.equals("int") || tokens.get(token_pos).identifier.equals("char") || tokens.get(token_pos).identifier.equals("boolean") || tokens.get(token_pos).type ==  tokenTypes.IDENTIFIER) {
 			writer.write(tokens.get(token_pos).toString());
 			token_pos++;
@@ -174,11 +176,11 @@ public class CompilationEngine {
 			}
 		}
 		
-		writer.write("</parameterList>");
+		writer.write("</parameterList>\n");
 	}
 	
 	public void compileVarDec() throws IOException{
-		writer.write("<variableDec>");
+		writer.write("<variableDec>\n");
 		
 		if(tokens.get(token_pos).identifier.equals("var")) {
 			writer.write(tokens.get(token_pos).toString());
@@ -204,11 +206,11 @@ public class CompilationEngine {
 				token_pos++;
 			}
 		}
-		writer.write("</variableDec>");
+		writer.write("</variableDec>\n");
 	}
 	
 	public void compileStatements() throws IOException{
-		writer.write("<statementList>");
+		writer.write("<statementList>\n");
 		
 		while(!tokens.get(token_pos+1).identifier.equals("}")) {
 			writer.write(tokens.get(token_pos).toString());
@@ -234,11 +236,11 @@ public class CompilationEngine {
 				compileReturn();
 			}
 		}
-		writer.write("</statementList>");
+		writer.write("</statementList>\n");
 	}
 	
 	public void compileDo() throws IOException{
-		writer.write("<doStatement>");
+		writer.write("<doStatement>\n");
 		writer.write(tokens.get(token_pos).toString());
 		token_pos++;
 		
@@ -291,10 +293,10 @@ public class CompilationEngine {
 		}
 			
 		
-		writer.write("</doStatement>");
+		writer.write("</doStatement>\n");
 	}
 	public void compileLet() throws IOException{
-		writer.write("<letStatement>");
+		writer.write("<letStatement>\n");
 		if (tokens.get(token_pos).equals("let")) {
 			writer.write(tokens.get(token_pos).toString());
 			token_pos++;
@@ -329,11 +331,11 @@ public class CompilationEngine {
 			token_pos++;
 		}
 		
-		writer.write("</letStatement>");
+		writer.write("</letStatement>\n");
 	}
 	
 	public void compileWhile() throws IOException{
-		writer.write("<whileStatement>");
+		writer.write("<whileStatement>\n");
 		if (tokens.get(token_pos).equals("while")) {
 			writer.write(tokens.get(token_pos).toString());
 			token_pos++;
@@ -371,7 +373,7 @@ public class CompilationEngine {
 	}
 	
 	public void compileReturn() throws IOException{
-		writer.write("<returnStatement>");
+		writer.write("<returnStatement>\n");
 		
 		if(t().identifier.equals("return")) {
 			writer.write(t().toString());
@@ -387,20 +389,91 @@ public class CompilationEngine {
 			token_pos++;
 		}
 		
-		writer.write("</returnStatement>");
+		writer.write("</returnStatement>\n");
 	}
 	
 	public void compileIf() throws IOException{
+		writer.write("<ifStatement>\n");
+		if(t().identifier.equals("if")) {
+			writer.write(t().toString());
+			token_pos++;
+		}
 		
+		if(t().identifier.equals("(")) {
+			writer.write(t().toString());
+		}
+		
+		compileExpression();
+		
+		token_pos++;
+		
+		if(t().identifier.equals(")")) {
+			writer.write(t().toString());
+			token_pos++;
+		}
+		
+		if(t().identifier.equals("{")) {
+			writer.write(t().toString());
+		}
+		
+		if(!t().identifier.equals("}")) {
+			compileStatements();
+		}
+		
+		if(t().identifier.equals("}")) {
+			writer.write(t().toString());
+			token_pos++;
+		}
+		
+		if(t().identifier.equals("else")) {
+			writer.write(t().toString());
+			token_pos++;
+			
+			if(t().identifier.equals("{")) {
+				writer.write(t().toString());
+			}
+			
+			if(!t().identifier.equals("}")) {
+				compileStatements();
+			}
+			
+			if(t().identifier.equals("}")) {
+				writer.write(t().toString());
+				token_pos++;
+			}
+			
+		}
+		
+		writer.write("</ifStatement>\n");
 	}
+	
 	public void compileExpression() throws IOException{
+		writer.write("<expression>");
 		
+		compileTerm();
+		
+		while (OPS.contains(t(1).identifier)) {
+			token_pos++;
+			writer.write(t().toString());
+			compileTerm();
+		}
+		writer.write("</expression>");
 	}
+	
 	public void compileTerm() throws IOException{
+		writer.write("<term>");
 		
+		
+		
+		writer.write("</term>");
 	}
+	
 	public void compileExpressionList() throws IOException{
+		writer.write("<expressionList>");
 		
+		
+		
+		writer.write("</expressionList>");
 	}
 	public String tabout() {
 		String outstring = "";
