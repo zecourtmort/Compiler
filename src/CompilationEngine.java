@@ -462,8 +462,87 @@ public class CompilationEngine {
 	
 	public void compileTerm() throws IOException{
 		writer.write("<term>");
+		if (UNOPS.contains(t(1).identifier)) {
+			token_pos++;
+			writer.write(t().toString());
+		}
 		
+		token_pos++;
+		if (t().type == tokenTypes.INT_CONST) {
+			writer.write(t().toString());
+		}
+		else if(t().type == tokenTypes.STRING_CONST) {
+			writer.write(t().toString());
+		}
+		else if(t().type == tokenTypes.IDENTIFIER && t(1).identifier.equals("[")) {
+			writer.write(t().toString());
+			token_pos++;
+			writer.write(t().toString());
+			
+			compileExpression();
+			
+			token_pos++;
+			if(t().identifier.equals("]")) {
+				writer.write(t().toString());
+			}
+		}
 		
+		else if(t().type == tokenTypes.IDENTIFIER && t(1).identifier.equals("(")) {
+			writer.write(t().toString());
+			token_pos++;
+			writer.write(t().toString());
+			
+			compileExpressionList();
+			
+			token_pos++;
+			if(t().identifier.equals(")")) {
+				writer.write(t().toString());
+			}
+		}
+		
+		else if(t().type == tokenTypes.IDENTIFIER && t(1).identifier.equals(".")) {
+			writer.write(t().toString());
+			token_pos++;
+			writer.write(t().toString());
+			
+			token_pos++;
+			
+			if (t().type == tokenTypes.IDENTIFIER) {
+				writer.write(t().toString());
+			}
+			
+			token_pos++;
+			if(t().identifier.equals("(")) {
+				writer.write(t().toString());
+			}
+			
+			compileExpressionList();
+			
+			token_pos++;
+			if(t().identifier.equals(")")) {
+				writer.write(t().toString());
+			}
+		}
+		
+		else if(t().type == tokenTypes.IDENTIFIER) {
+			writer.write(t().toString());
+		}
+		
+		else if(t().identifier.equals("(")) {
+			writer.write(t().toString());
+			token_pos++;
+			
+			compileExpression();
+			
+			token_pos++;
+			
+			if(t().identifier.equals(")")) {
+				writer.write(t().toString());
+			}
+		}
+		else {
+			System.out.println("you may have screwed up somewhere.");
+		}
 		
 		writer.write("</term>");
 	}
