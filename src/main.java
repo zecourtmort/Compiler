@@ -10,9 +10,9 @@ public class main{
 		in.add(new token(tokenTypes.KEYWORD, "class"));
 		in.add(new token(tokenTypes.IDENTIFIER, "testIDEN1"));
 		in.add(new token(tokenTypes.SYMBOL, "{"));
-		in.add(new token(tokenTypes.INT_CONST, "testINT1"));
-		in.add(new token(tokenTypes.IDENTIFIER, "testIDEN2"));
-		in.add(new token(tokenTypes.SYMBOL, "testSYM2"));
+		in.add(new token(tokenTypes.INT_CONST, "x"));
+		in.add(new token(tokenTypes.IDENTIFIER, ","));
+		in.add(new token(tokenTypes.SYMBOL, "y"));
 		in.add(new token(tokenTypes.STRING_CONST, "testSTR1"));
 		in.add(new token(tokenTypes.INT_CONST, "testINT2"));
 		in.add(new token(tokenTypes.STRING_CONST, "testSTR2"));

@@ -175,16 +175,123 @@ public class CompilationEngine {
 		}
 		
 		writer.write("</parameterList>");
-		
 	}
-	public void compileVarDec(){
+	
+	public void compileVarDec() throws IOException{
+		writer.write("<variableDec>");
 		
+		if(tokens.get(token_pos).identifier.equals("var")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(tokens.get(token_pos).identifier.equals("void") ||tokens.get(token_pos).identifier.equals("int") || tokens.get(token_pos).identifier.equals("char") || tokens.get(token_pos).identifier.equals("boolean") || tokens.get(token_pos).type ==  tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		if(tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+		
+		while(tokens.get(token_pos+1).identifier.equals(",")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		
+			if(tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+				writer.write(tokens.get(token_pos).toString());
+				token_pos++;
+			}
+		}
+		writer.write("</variableDec>");
 	}
-	public void compileStatements(){
+	
+	public void compileStatements() throws IOException{
+		writer.write("<statementList>");
 		
+		while(!tokens.get(token_pos+1).identifier.equals("}")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		
+			if(tokens.get(token_pos).identifier.equals("let")) {
+				compileLet();
+			}
+			
+			else if(tokens.get(token_pos).identifier.equals("if")) {
+				compileIf();
+			}
+			
+			else if(tokens.get(token_pos).identifier.equals("while")) {
+				compileWhile();
+			}
+			
+			else if(tokens.get(token_pos).identifier.equals("do")) {
+				compileDo();
+			}
+			
+			else if(tokens.get(token_pos).identifier.equals("return")) {
+				compileReturn();
+			}
+		}
+		writer.write("</statementList>");
 	}
-	public void compileDo(){
+	
+	public void compileDo() throws IOException{
+		writer.write("<doStatement>");
+		writer.write(tokens.get(token_pos).toString());
+		token_pos++;
 		
+		if(tokens.get(token_pos+1).identifier.equals("(") && tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+			
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+			
+			compileExpressionList();
+			
+			if (tokens.get(token_pos).identifier.equals(")")) {
+				writer.write(tokens.get(token_pos).toString());
+				token_pos++;
+			}
+			
+		}
+		
+		else if(tokens.get(token_pos+1).identifier.equals(".") && tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+			
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+			
+			if (tokens.get(token_pos).type == tokenTypes.IDENTIFIER) {
+				writer.write(tokens.get(token_pos).toString());
+				token_pos++;
+			}
+			
+			if(tokens.get(token_pos).identifier.equals("(")) {
+				writer.write(tokens.get(token_pos).toString());
+				token_pos++;
+			}
+			
+			compileExpressionList();
+			
+			
+			
+			if (tokens.get(token_pos).identifier.equals(")")) {
+				writer.write(tokens.get(token_pos).toString());
+				token_pos++;
+			}
+		}
+		
+		if (tokens.get(token_pos).identifier.equals(";")) {
+			writer.write(tokens.get(token_pos).toString());
+			token_pos++;
+		}
+			
+		
+		writer.write("</doStatement>");
 	}
 	public void compileLet(){
 		
@@ -198,13 +305,13 @@ public class CompilationEngine {
 	public void compileIf(){
 		
 	}
-	public void CompileExpression(){
+	public void compileExpression(){
 		
 	}
-	public void CompileTerm(){
+	public void compileTerm(){
 		
 	}
-	public void CompileExpressionList(){
+	public void compileExpressionList(){
 		
 	}
 	public String tabout() {
