@@ -5,30 +5,14 @@ import java.io.*;
 public class main{
 	
 	public static void main(String args[]) throws FileNotFoundException, IOException{
-		// TODO code application logic here
-		ArrayList<token> in = new ArrayList<token>();
-		in.add(new token(tokenTypes.KEYWORD, "class"));
-		in.add(new token(tokenTypes.IDENTIFIER, "testIDEN1"));
-		in.add(new token(tokenTypes.SYMBOL, "{"));
-		in.add(new token(tokenTypes.INT_CONST, "x"));
-		in.add(new token(tokenTypes.IDENTIFIER, ","));
-		in.add(new token(tokenTypes.SYMBOL, "y"));
-		in.add(new token(tokenTypes.STRING_CONST, "testSTR1"));
-		in.add(new token(tokenTypes.INT_CONST, "testINT2"));
-		in.add(new token(tokenTypes.STRING_CONST, "testSTR2"));
-		
-		CompilationEngine ce = new CompilationEngine(in, "testOut");
-		
-		
-		
-    /*    if (args.length != 1) {
+		if (args.length != 1) {
             System.out.println("Please enter: java VMtranslator FILENAME|DIRECTORY");
         }
         else{
             File infile = new File(args[0]);
             String outfiledirectory = "";
             File outfile;
-            CodeWriter writer;
+            
             ArrayList<File> vm = new ArrayList<File>();
             
             if (infile.isFile()) {
@@ -38,8 +22,8 @@ public class main{
                     throw new IllegalArgumentException(".vm file required.");
                 }
                 
-                vm.add(infile);
-                outfiledirectory = path.substring(0, path.lastIndexOf(".")) + ".asm";    
+                //vm.add(infile);
+                //outfiledirectory = path.substring(0, path.lastIndexOf(".")) + ".asm";    
             }
             
             else if (infile.isDirectory()) {
@@ -95,15 +79,14 @@ public class main{
             System.out.println("New file here: " + outfiledirectory);
 	}
         
-        class VMTranslator {
-            public static ArrayList<File> getFiles(File dir) {
-                File[] fs = dir.listFiles();
-                ArrayList<File> files = new ArrayList<File>();
-                for (File f:fs){
-                    if (f.getName().endsWith(".vm")) files.add(f);
-                }
-                return files;
-            }
-        }*/
-}
+    public static ArrayList<File> getFiles(File dir) {
+    	File[] fs = dir.listFiles();
+        ArrayList<File> files = new ArrayList<File>();
+        for (File f:fs){
+            if (f.getName().endsWith(".vm")) files.add(f);
+        }
+        return files;
+        
+        
+    }
 }
