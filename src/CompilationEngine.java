@@ -550,8 +550,19 @@ public class CompilationEngine {
 	public void compileExpressionList() throws IOException{
 		writer.write("<expressionList>");
 		
+		if(t(1).identifier.equals(")")) {
+			writer.write("</expressionList>");
+			return;
+		}
 		
+		compileExpression();
 		
+		while(t(1).identifier.equals(",")) {
+			token_pos++;
+			writer.write(t().toString());
+			
+			compileExpression();
+		}
 		writer.write("</expressionList>");
 	}
 	public String tabout() {
