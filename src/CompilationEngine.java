@@ -42,7 +42,7 @@ public class CompilationEngine {
 		
 		if (tokens.get(token_pos).identifier.contains("{")) {
 			writer.write(tokens.get(token_pos).toString());
-			token_pos++;
+			
 		}
 		
 		
@@ -60,10 +60,12 @@ public class CompilationEngine {
 		}
 		
 		token_pos--;
-		writer.write("</class>");
+		writer.write("</class>\n");
 	}
 	public void compileClassVarDec() throws IOException{
 		writer.write("<ClassVarDec>\n");
+		
+		token_pos++;
 		
 		if (tokens.get(token_pos).identifier.contains("static") || tokens.get(token_pos).identifier.contains("field")) {
 			//tab++;
@@ -103,7 +105,9 @@ public class CompilationEngine {
 	}
 	
 	public void compileSubroutine() throws IOException {
-		writer.write("<subroutine>\n");
+		writer.write("<subroutineDec>\n");
+		
+		token_pos++;
 		
 		if(tokens.get(token_pos).identifier.equals("constructor") || tokens.get(token_pos).identifier.equals("function") || tokens.get(token_pos).identifier.equals("method")) {
 			writer.write(tokens.get(token_pos).toString());
@@ -122,13 +126,14 @@ public class CompilationEngine {
 		
 		if(tokens.get(token_pos).identifier.equals("(")) {
 			writer.write(tokens.get(token_pos).toString());
-			token_pos++;
+			
 		}
 		
 		if(!tokens.get(token_pos).identifier.equals(")")) {
 			compileParameterList();
 		}
 		
+		token_pos++;
 		if(tokens.get(token_pos).identifier.equals(")")) {
 			writer.write(tokens.get(token_pos).toString());
 			token_pos++;
@@ -136,21 +141,32 @@ public class CompilationEngine {
 		
 		writer.write("<subroutineBody>\n");
 		
-		if(!tokens.get(token_pos).identifier.equals("}")) {
+		if(t().identifier.equals("{")) {
+			writer.write(t().toString());
+		}
+		
+		while(t(1).identifier.equals("var")){
+			compileVarDec();
+		}
+		
+		
+		if(!tokens.get(token_pos+1).identifier.equals("}")) {
 			compileStatements();
 		}
 		
+		token_pos++;
 		if(tokens.get(token_pos).identifier.equals("}")) {
 			writer.write(tokens.get(token_pos).toString());
-			token_pos++;
 		}
 		
 		writer.write("</subroutineBody>\n");
-		writer.write("<subroutineDec>\n");
+		writer.write("</subroutineDec>\n");
 		
 	}
 	public void compileParameterList() throws IOException{
 		writer.write("<parameterList>\n");
+		
+		token_pos++;
 		if(tokens.get(token_pos).identifier.equals("int") || tokens.get(token_pos).identifier.equals("char") || tokens.get(token_pos).identifier.equals("boolean") || tokens.get(token_pos).type ==  tokenTypes.IDENTIFIER) {
 			writer.write(tokens.get(token_pos).toString());
 			token_pos++;
@@ -181,7 +197,7 @@ public class CompilationEngine {
 	
 	public void compileVarDec() throws IOException{
 		writer.write("<variableDec>\n");
-		
+		token_pos++;
 		if(tokens.get(token_pos).identifier.equals("var")) {
 			writer.write(tokens.get(token_pos).toString());
 			token_pos++;
@@ -369,7 +385,7 @@ public class CompilationEngine {
 			token_pos++;
 		}
 		
-		writer.write("</whileStatement>");
+		writer.write("</whileStatement>\n");
 	}
 	
 	public void compileReturn() throws IOException{
@@ -448,7 +464,7 @@ public class CompilationEngine {
 	}
 	
 	public void compileExpression() throws IOException{
-		writer.write("<expression>");
+		writer.write("<expression>\n");
 		
 		compileTerm();
 		
@@ -457,11 +473,11 @@ public class CompilationEngine {
 			writer.write(t().toString());
 			compileTerm();
 		}
-		writer.write("</expression>");
+		writer.write("</expression>\n");
 	}
 	
 	public void compileTerm() throws IOException{
-		writer.write("<term>");
+		writer.write("<term>\n");
 		if (UNOPS.contains(t(1).identifier)) {
 			token_pos++;
 			writer.write(t().toString());
@@ -544,14 +560,14 @@ public class CompilationEngine {
 			System.out.println("you may have screwed up somewhere.");
 		}
 		
-		writer.write("</term>");
+		writer.write("</term>\n");
 	}
 	
 	public void compileExpressionList() throws IOException{
-		writer.write("<expressionList>");
+		writer.write("<expressionList>\n");
 		
 		if(t(1).identifier.equals(")")) {
-			writer.write("</expressionList>");
+			writer.write("</expressionList>\n");
 			return;
 		}
 		
@@ -563,7 +579,7 @@ public class CompilationEngine {
 			
 			compileExpression();
 		}
-		writer.write("</expressionList>");
+		writer.write("</expressionList>\n");
 	}
 	public String tabout() {
 		String outstring = "";
