@@ -231,7 +231,7 @@ public class CompilationEngine {
 		while(!tokens.get(token_pos+1).identifier.equals("}")) {
 			writer.write(tokens.get(token_pos).toString());
 			token_pos++;
-		
+
 			if(tokens.get(token_pos).identifier.equals("let")) {
 				compileLet();
 			}

@@ -408,96 +408,7 @@ public class JackTokenizer{
     	tkns=tkn.replace("("," ");
     	tknsplit = tkns.split(" ");
     	System.out.println(tknsplit.length);
-    		if(tknsplit[0].matches(".\\d.*")){
-    			Tokens.add(new token(tokenTypes.INT_CONST,tknsplit[0]));
-    		}
-    		else if(kword.contains(tknsplit[0])){
-    			Tokens.add(new token(tokenTypes.KEYWORD, tknsplit[0]));
-    		}
-    		else{
-    			System.out.println("issue here");
-    			Tokens.add(new token(tokenTypes.IDENTIFIER, tknsplit[0]));
-    		}
-    		for(int k = 0; k < args; k ++){
-    			Tokens.add(new token(tokenTypes.SYMBOL, "("));
-    		}
-    		if(tknsplit.length>1){
-    			if(tknsplit[tknsplit.length-1].contains(",")){
-        			String strcon=tknsplit[tknsplit.length-1].replace(",","");
-        			System.out.println("		" +tknsplit[tknsplit.length-1]);
-        			System.out.println(strcon);
-        			if(strcon.matches(".\\d.*")||strcon.contains("0")){
-        				System.out.println("eh");
-        				Tokens.add(new token(tokenTypes.INT_CONST,strcon));
-        			}
-        			else if(kword.contains(strcon)){
-        				Tokens.add(new token(tokenTypes.KEYWORD, strcon));
-        			}
-        			else{
-        				System.out.println("beh");
-        				Tokens.add(new token(tokenTypes.IDENTIFIER, strcon));
-        			}
-        			Tokens.add(new token(tokenTypes.SYMBOL,","));
-        		}
-    			else{
-    				boolean rightparen=false;
-    				int number = 0;
-    				boolean semi=false;
-    				System.out.println("		" +tknsplit[tknsplit.length-1]);
-    				if(tknsplit[tknsplit.length-1].contains(")")){
-    					for(int i = 0;i<tknsplit[tknsplit.length-1].length();i++ ){
-    						if(tknsplit[tknsplit.length-1].charAt(i)==')'){
-    							number++;
-    						}
-    					}
-    					rightparen=true;
-    					tknsplit[tknsplit.length-1]=tknsplit[tknsplit.length-1].replace(")","");
-    				}
-    				if(tknsplit[tknsplit.length-1].contains(";")){
-    					semi=true;
-    					tknsplit[tknsplit.length-1]=tknsplit[tknsplit.length-1].replace(";", "");
-    				}
-    			if(tknsplit[tknsplit.length-1].matches("")){
-    				
-    			}
-    			else if(tknsplit[tknsplit.length-1].matches(".\\d.*")||tknsplit[tknsplit.length-1].contains("5")){
-        			Tokens.add(new token(tokenTypes.INT_CONST,tknsplit[tknsplit.length-1]));
-        		}
-        		else if(kword.contains(tknsplit[tknsplit.length-1])){
-        			Tokens.add(new token(tokenTypes.KEYWORD, tknsplit[tknsplit.length-1]));
-        		}
-        		else{
-        			String[] symbolis = null;
-        			int j=0;
-        			for(int i = 0; i < symboltable.length;i++){
-        				if(tknsplit[tknsplit.length-1].contains(symboltable[i])){
-        					symbolis[j]=symboltable[i];
-        					j++;
-        				}
-        			}
-        			for(int k = 0; k<symbolis.length;k++){
-        				Tokens.add(new token(tokenTypes.SYMBOL,symbolis[k]));
-        			}
-        			Tokens.add(new token(tokenTypes.IDENTIFIER, tknsplit[tknsplit.length-1]));
-        		}
-        		if(rightparen){
-        			for(int i = 0; i<number;i++){
-        				Tokens.add(new token(tokenTypes.SYMBOL,")"));
-        			}
-        		}
-        		if(semi){
-        			Tokens.add(new token(tokenTypes.SYMBOL,";"));
-        		}
-    			}
-    		}
-    		else if(tkn.contains("()")){
-    		token paren2 = new token(tokenTypes.SYMBOL, ")");
-    		Tokens.add(paren2);
-    			if(tkn.contains(";")){
-    				Tokens.add(new token(tokenTypes.SYMBOL,";"));
-    			}
-    		}
-    	else if(tknsplit[1].contains("\"")){
+    	if(tknsplit[1].contains("\"")){
     		String hol;
     		System.out.println("here?");
     		token rightparen=null;
@@ -535,6 +446,86 @@ public class JackTokenizer{
     		}
     	}
     	else{
+			boolean rightparen=false;
+			int number = 0;
+			boolean semi=false;
+    		if(tknsplit[0].matches(".\\d.*")){
+    			Tokens.add(new token(tokenTypes.INT_CONST,tknsplit[0]));
+    		}
+    		else if(kword.contains(tknsplit[0])){
+    			Tokens.add(new token(tokenTypes.KEYWORD, tknsplit[0]));
+    		}
+    		else{
+    			System.out.println("issue here");
+    			Tokens.add(new token(tokenTypes.IDENTIFIER, tknsplit[0]));
+    		}
+    		for(int k = 0; k < args; k ++){
+    			Tokens.add(new token(tokenTypes.SYMBOL, "("));
+    		}
+    		if(tknsplit.length>1){
+    			if(tknsplit[tknsplit.length-1].contains(",")){
+        			String strcon=tknsplit[tknsplit.length-1].replace(",","");
+        			System.out.println("		" +tknsplit[tknsplit.length-1]);
+        			System.out.println(strcon);
+        			if(strcon.matches(".\\d.*")||strcon.contains("0")){
+        				System.out.println("eh");
+        				Tokens.add(new token(tokenTypes.INT_CONST,strcon));
+        			}
+        			else if(kword.contains(strcon)){
+        				Tokens.add(new token(tokenTypes.KEYWORD, strcon));
+        			}
+        			else{
+        				System.out.println("beh");
+        				Tokens.add(new token(tokenTypes.IDENTIFIER, strcon));
+        			}
+        			Tokens.add(new token(tokenTypes.SYMBOL,","));
+        		}
+    			else{
+    				System.out.println("		" +tknsplit[tknsplit.length-1]);
+    				if(tknsplit[tknsplit.length-1].contains(")")){
+    					for(int i = 0;i<tknsplit[tknsplit.length-1].length();i++ ){
+    						if(tknsplit[tknsplit.length-1].charAt(i)==')'){
+    							number++;
+    						}
+    					}
+    					rightparen=true;
+    					tknsplit[tknsplit.length-1]=tknsplit[tknsplit.length-1].replace(")","");
+    				}
+    				if(tknsplit[tknsplit.length-1].contains(";")){
+    					semi=true;
+    					tknsplit[tknsplit.length-1]=tknsplit[tknsplit.length-1].replace(";", "");
+    				}
+    			}
+    			if(tknsplit[tknsplit.length-1].matches("")){
+    				
+    			}
+    			else if(tknsplit[tknsplit.length-1].matches(".\\d.*")||tknsplit[tknsplit.length-1].contains("5")){
+        			Tokens.add(new token(tokenTypes.INT_CONST,tknsplit[tknsplit.length-1]));
+        		}
+        		else if(kword.contains(tknsplit[tknsplit.length-1])){
+        			Tokens.add(new token(tokenTypes.KEYWORD, tknsplit[tknsplit.length-1]));
+        		}
+        		else{
+        			
+        			Tokens.add(new token(tokenTypes.IDENTIFIER, tknsplit[tknsplit.length-1]));
+        		}
+        		if(rightparen){
+        			for(int i = 0; i<number;i++){
+        				Tokens.add(new token(tokenTypes.SYMBOL,")"));
+        			}
+        		}
+        		if(semi){
+        			Tokens.add(new token(tokenTypes.SYMBOL,";"));
+        		}
+    			}
+    		else if(tkn.contains("()")){
+    		token paren2 = new token(tokenTypes.SYMBOL, ")");
+    		Tokens.add(paren2);
+    			if(tkn.contains(";")){
+    				Tokens.add(new token(tokenTypes.SYMBOL,";"));
+    			}
+    		}
+    		else{
             if(tkn.contains(")")){
             	if(tkn.contains("(")){
             		tkn = tkn.replace("(", " ");
@@ -593,5 +584,7 @@ public class JackTokenizer{
     	}
     	return true;
     }
+    }
+		return false;
     }
 }
